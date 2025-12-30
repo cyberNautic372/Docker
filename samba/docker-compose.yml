@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  samba:
+    image: dperson/samba
+    container_name: samba
+    ports:
+      - "139:139"
+      - "445:445"
+    volumes:
+      - ./shared:/shared
+    environment:
+      - USERID=1000
+      - GROUPID=1000
+    command: >
+      -u "psy;psysambapass619"
+      -s "Shared;/shared;yes;yes;yes;psy"
+      -n
+    restart: unless-stopped
