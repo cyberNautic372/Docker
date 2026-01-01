@@ -1,0 +1,21 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    ports:
+      - "4533:4533"
+    volumes:
+      - ./data:/data
+      - ./music:/music
+    restart: unless-stopped
+
+  feishin:
+    image: ghcr.io/jeffvli/feishin:latest
+    ports:
+      - "8081:9180"        # << YOUR PORT
+    restart: unless-stopped
+    environment:
+      SUBSONIC_URL: http://navidrome:4533        # REQUIRED
+      SUBSONIC_INSECURE: "true"                  # TLS disable to avoid block
+      # Optional auto-login setup:
+      # SUBSONIC_USERNAME: <your user>
+      # SUBSONIC_PASSWORD: <your pass>
