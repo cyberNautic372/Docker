@@ -1,0 +1,29 @@
+services:
+  vnc:
+    image: ghcr.io/linuxserver/webtop:ubuntu-xfce
+    container_name: vnc_desktop
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Kolkata
+      - SUBFOLDER=/
+
+      # Keep SSL enabled
+      - SECURE_CONNECTION=1
+      - SSL_CERT=/config/ssl/cert.pem
+      - SSL_KEY=/config/ssl/cert.key
+
+      - VNC_PASSWORD=VncPass123!
+
+    volumes:
+      - ./config:/config
+      - ./ssl:/config/ssl:ro
+
+    # Map to port 3001 for HTTPS
+    ports:
+      - "5800:3001"  # CHANGED: Map to 3001 for HTTPS
+      - "5900:5900"  # VNC protocol
+
+    shm_size: "1gb"
+    restart: unless-stopped
